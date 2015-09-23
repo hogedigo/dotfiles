@@ -52,6 +52,7 @@ set smartcase
 set wrapscan
 "set clipboard=unnamedplus
 set noic
+set completeopt+=longest
 
 nnoremap <C-h>   gT
 nnoremap <C-l>   gt
@@ -60,7 +61,7 @@ filetype on
 filetype plugin indent on
 filetype off
 filetype plugin indent off
-set runtimepath+=$GOROOT/misc/vim
+"set runtimepath+=$GOROOT/misc/vim
 autocmd BufWritePre * :%s/\s\+$//e
 execute pathogen#infect()
 syntax on
@@ -85,7 +86,8 @@ let g:ctrlp_custom_ignore = {
 
 let g:gofmt_command = 'goimports'
 
-autocmd BufWritePost,FileWritePost *.go execute 'Lint' | cwindow
+autocmd FileType go autocmd BufWritePre <buffer> Fmt
+" autocmd BufWritePost,FileWritePost *.go execute 'Lint' | cwindow
 
 let g:godef_split=2
 let g:godef_same_file_in_same_window=1
