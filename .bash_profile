@@ -1,15 +1,19 @@
+export HISTCONTROL=ignoreboth
+export HISTSIZE=10000
+export HISTIGNORE=history:pwd
+
+
 #export GOROOT=/usr/local/go
 #export GOROOT=$GAE/goroot
-#export GOPATH=~/go
-#export GAEGO=~/google_appengine_go_1.9.26
+#export GAEGO=~/google_appengine_go_1.9.48
+export GAEGO=~/google_appengine_go_1.9.57
 export GOOS=darwin
 export GOARCH=amd64
 export MAVEN_OPTS=-Dfile.encoding=UTF-8
-export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+export JAVA_HOME=`/usr/libexec/java_home -v 1.7`
 export _JAVA_OPTIONS="-XX:MaxPermSize=512m -Xmx2048m -Xms512m"
-export GOROOT=/usr/local/go
 export GOPATH=~/go
-export PATH=$HOME/.rbenv/shims:$GOROOT/bin:$GOPATH/bin:$PATH:~/apache-maven-3.3.3/bin:$HOME/bin
+export PATH=$HOME/.npmbrew/current/bin:$HOME/.nodebrew/current/bin:$HOME/.rbenv/shims:/usr/local/go/bin:$GOPATH/bin:~/apache-maven-3.3.9/bin:$HOME/bin:$GAEGO:~/appengine-java-sdk-1.9.37/bin:$PATH:/usr/local/bin
 
 if [ -f ~/.bashrc ]; then
 
@@ -30,7 +34,7 @@ source /Users/daigoikeda/google-cloud-sdk/completion.bash.inc
 export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 # Finished adapting your PATH environment variable for use with MacPorts.
 
-export MILLADSERVER=~/github/mill-adserver/web/js-player/
+export MILLADSERVER=~/github/mill-jssdk/web/js-player/
 
 alias ntfy='osascript -e '"'"'display notification "done"'"'"''
 
