@@ -1,5 +1,5 @@
 set encoding=utf-8
-set fileencodings=iso-2022-jp,cp932,sjis,euc-jp,utf-8
+set fileencodings=utf-8,iso-2022-jp,cp932,sjis,euc-jp
 
 set nocompatible              " be iMproved, required
 filetype off                  " required
@@ -53,6 +53,7 @@ set wrapscan
 "set clipboard=unnamedplus
 set noic
 set completeopt+=longest
+set nrformats-=octal
 
 nnoremap <C-h>   gT
 nnoremap <C-l>   gt
@@ -62,7 +63,7 @@ filetype plugin indent on
 filetype off
 filetype plugin indent off
 "set runtimepath+=$GOROOT/misc/vim
-autocmd BufWritePre * :%s/\s\+$//e
+"autocmd BufWritePre * :%s/\s\+$//e
 execute pathogen#infect()
 syntax on
 filetype plugin indent on
