@@ -1,38 +1,7 @@
+" let mapleader = ","
+
 set encoding=utf-8
 set fileencodings=utf-8,iso-2022-jp,cp932,sjis,euc-jp
-
-set nocompatible              " be iMproved, required
-filetype off                  " required
-
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
-
-Plugin 'google/vim-ft-go'
-Plugin 'vim-jp/vim-go-extra'
-Plugin 'dgryski/vim-godef'
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
-
-
 set nu
 set backspace=start,eol,indent
 set nobackup
@@ -55,19 +24,6 @@ set noic
 set completeopt+=longest
 set nrformats-=octal
 
-nnoremap <C-h>   gT
-nnoremap <C-l>   gt
-
-filetype on
-filetype plugin indent on
-filetype off
-filetype plugin indent off
-"set runtimepath+=$GOROOT/misc/vim
-"autocmd BufWritePre * :%s/\s\+$//e
-execute pathogen#infect()
-syntax on
-filetype plugin indent on
-
 " netrwは常にtree view
 let g:netrw_liststyle = 3
 " CVSと.で始まるファイルは表示しない
@@ -85,10 +41,98 @@ let g:ctrlp_custom_ignore = {
   \ 'dir':  '/src/static/',
 \ }
 
-let g:gofmt_command = 'goimports'
+nnoremap <C-h>   gT
+nnoremap <C-l>   gt
 
-autocmd FileType go autocmd BufWritePre <buffer> Fmt
-" autocmd BufWritePost,FileWritePost *.go execute 'Lint' | cwindow
+"""""""""" from vim-go """"""""""
 
-let g:godef_split=2
-let g:godef_same_file_in_same_window=1
+call plug#begin()
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'SirVer/ultisnips'
+Plug 'ctrlpvim/ctrlp.vim'
+call plug#end()
+
+set autowrite
+
+" Jump to next error with Ctrl-n and previous error with Ctrl-m. Close the
+" quickfix window with <leader>a
+" map <C-n> :cnext<CR>
+" map <C-m> :cprevious<CR>
+nnoremap [q :cprevious<CR>   " 前へ
+nnoremap ]q :cnext<CR>       " 次へ
+nnoremap <leader>a :cclose<CR>
+
+"""""""""""""""""""""
+"      Plugins      "
+"""""""""""""""""""""
+
+" vim-go
+let g:go_fmt_command = "goimports"
+let g:go_autodetect_gopath = 1
+let g:go_list_type = "quickfix"
+let g:go_test_timeout = '10m'
+
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_generate_tags = 1
+let g:go_addtags_transform = "camelcase"
+let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
+let g:go_metalinter_autosave = 1
+let g:go_metalinter_deadline = "5s"
+let g:go_gocode_unimported_packages = 1
+" let g:go_auto_type_info = 1
+
+augroup go
+  autocmd!
+
+  " Show by default 4 spaces for a tab
+  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
+
+  " :GoBuild and :GoTestCompile
+  autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+
+  " :GoTest
+  autocmd FileType go nmap <leader>t  <Plug>(go-test)
+
+  " :GoRun
+  autocmd FileType go nmap <leader>r  <Plug>(go-run)
+
+  " :GoDoc
+  autocmd FileType go nmap <Leader>d <Plug>(go-doc)
+
+  " :GoCoverageToggle
+  autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
+
+  " :GoInfo
+  autocmd FileType go nmap <Leader>i <Plug>(go-info)
+
+  " :GoMetaLinter
+  autocmd FileType go nmap <Leader>l <Plug>(go-metalinter)
+
+  " :GoDef but opens in a vertical split
+  autocmd FileType go nmap <Leader>v <Plug>(go-def-vertical)
+  " :GoDef but opens in a horizontal split
+  autocmd FileType go nmap <Leader>s <Plug>(go-def-split)
+
+  " :GoAlternate  commands :A, :AV, :AS and :AT
+  autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+  autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+  autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+  autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+augroup END
+
+
+" build_go_files is a custom function that builds or compiles the test file.
+" It calls :GoBuild if its a Go file, or :GoTestCompile if it's a test file
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#test#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
