@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<folders>
+	<folder>
+		<title>misc</title>
+		<snippets>
+			<snippet>
+				<title>vimgrep go</title>
+				<content>`git ls-files *.go`|cw</content>
+			</snippet>
+			<snippet>
+				<title>set GOROOT</title>
+				<content>export GOROOT=`go env GOROOT`</content>
+			</snippet>
+			<snippet>
+				<title>swagger-ui</title>
+				<content>/swagger-ui/?url=/api/swagger.json</content>
+			</snippet>
+			<snippet>
+				<title>gcp lang setting(EN)</title>
+				<content>?hl=en</content>
+			</snippet>
+		</snippets>
+	</folder>
+</folders>

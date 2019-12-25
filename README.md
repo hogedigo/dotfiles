@@ -1,2 +1,2 @@
-- .vimrc
+dot files of hogedigo
 
