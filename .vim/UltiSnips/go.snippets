@@ -1,0 +1,15 @@
+# if inline error wrapor
+snippet ifew "If with inline error "
+if err := ${1:${VISUAL}}; err != nil {
+	return errors.WrapOr(err)
+}
+${0}
+endsnippet
+
+# error WrapOr snippet
+snippet errw "Error return wrapor" !b
+if err != nil {
+	return errors.WrapOr(err)
+}
+${0}
+endsnippet
