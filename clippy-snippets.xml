@@ -5,7 +5,7 @@
 		<snippets>
 			<snippet>
 				<title>vimgrep go</title>
-				<content>`git ls-files *.go`|cw</content>
+				<content>`git ls-files '*.go'`|cw</content>
 			</snippet>
 			<snippet>
 				<title>set GOROOT</title>
